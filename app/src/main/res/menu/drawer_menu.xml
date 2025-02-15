@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_elections"
+        android:title="Student Elections" />
+    <item
+        android:id="@+id/nav_complaints"
+        android:title="Anonymous Complaints" />
+    <item
+        android:id="@+id/nav_booking"
+        android:title="Facility Booking" />
+    <item
+        android:id="@+id/nav_budget"
+        android:title="Budget Tracking" />
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout" />
+</menu>

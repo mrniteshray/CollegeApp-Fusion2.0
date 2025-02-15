@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "115270594754",
+    "project_id": "nitesh-college-app-c3f12",
+    "storage_bucket": "nitesh-college-app-c3f12.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115270594754:android:1a4d2b7893eef67a0f8b5b",
+        "android_client_info": {
+          "package_name": "xcom.niteshray.apps.collegeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGd3hm7ho_hw2ipfR0xQjKxAfYhp78wNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
