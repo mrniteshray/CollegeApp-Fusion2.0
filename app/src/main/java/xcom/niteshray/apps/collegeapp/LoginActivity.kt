@@ -25,6 +25,11 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
+        if (mauth.currentUser != null){
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
+
         binding.loginButton.setOnClickListener{
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()

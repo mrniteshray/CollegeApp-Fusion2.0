@@ -5,9 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import xcom.niteshray.apps.collegeapp.R
 import xcom.niteshray.apps.collegeapp.databinding.FragmentHomeBinding
 import xcom.niteshray.apps.collegeapp.model.User
 
@@ -30,6 +33,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.cardElection.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_electionFragment)
+        }
+
 
         fetchuser()
     }

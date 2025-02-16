@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navgraph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_electionFragment"
+            app:destination="@id/electionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/electionFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.elections.ElectionFragment"
+        android:label="fragment_election"
+        tools:layout="@layout/fragment_election" >
+        <action
+            android:id="@+id/action_electionFragment_to_votingFragment"
+            app:destination="@id/votingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/votingFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.elections.VotingFragment"
+        android:label="fragment_voting"
+        tools:layout="@layout/fragment_voting">
+        <argument
+            android:name="position"
+            app:argType="string"
+            android:defaultValue="noValue" />
+    </fragment>
+</navigation>
