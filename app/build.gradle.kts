@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     //Glide library
     implementation(libs.github.glide)
+
     implementation(libs.circleimageview)
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.gridlayout)

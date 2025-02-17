@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:cardCornerRadius="18dp"
+    app:cardElevation="18dp"
+    android:background="@color/white"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:padding="12dp"
+        >
+    <TextView
+        android:id="@+id/tv_complaint_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Anonymous"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/black" />
+    <TextView
+        android:id="@+id/tv_complaint_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Complaint description goes here..."
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:paddingTop="4dp" />
+
+    <Button
+        android:id="@+id/btn_voteReveal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:visibility="gone"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_gravity="end"
+        android:textColor="@color/white"
+        android:textSize="18sp"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -46,7 +46,10 @@ class VotingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set RecyclerView LayoutManager
+        binding.textView.text = "${args.position} Candidates"
+        if (args.role =="Admin"){
+            binding.floatingActionButton.visibility = View.VISIBLE
+        }
         binding.candidateRecycler.layoutManager = LinearLayoutManager(requireContext())
 
         fetchCandidates()

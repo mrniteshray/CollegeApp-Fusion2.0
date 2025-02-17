@@ -25,6 +25,8 @@ class ElectionFragment : Fragment() {
 
     private val db = FirebaseFirestore.getInstance()
 
+    private lateinit var Userrole : String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,12 +38,12 @@ class ElectionFragment : Fragment() {
         getUserRole()
 
         binding.president.setOnClickListener {
-            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment("President")
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "President", role = Userrole)
             findNavController().navigate(action)
         }
 
         binding.vicePresident.setOnClickListener {
-            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment("Vice President")
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Vice President", role = Userrole)
             findNavController().navigate(action)
         }
 
@@ -126,6 +128,7 @@ class ElectionFragment : Fragment() {
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
                         val role = document.getString("role") ?: "Student"
+                        Userrole = role
                         if(role == "Admin"){
                             binding.btnEditTiming.visibility = View.VISIBLE
                         }else{

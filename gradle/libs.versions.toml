@@ -16,6 +16,8 @@ firebaseAuth = "23.2.0"
 navigationFragmentKtx = "2.8.7"
 firebaseFirestore = "25.1.2"
 gridlayout = "1.0.0"
+nlClassification = "16.0.0"
+firebaseMlNaturalLanguageSmartReply = "18.0.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +35,8 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 androidx-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "gridlayout" }
+nl-classification = { module = "com.google.mlkit:nl-classification", version.ref = "nlClassification" }
+firebase-ml-natural-language-smart-reply = { group = "com.google.firebase", name = "firebase-ml-natural-language-smart-reply", version.ref = "firebaseMlNaturalLanguageSmartReply" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -21,8 +21,10 @@ class HomeFragment : Fragment() {
 
     private lateinit var currentuser : User
 
+
     private var auth = FirebaseAuth.getInstance().currentUser?.uid
 
+    lateinit var role : String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,8 +36,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getUserRole()
+
         binding.cardElection.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_electionFragment)
+        }
+        binding.complaints.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_complaintFragment)
         }
 
 
@@ -60,5 +67,22 @@ class HomeFragment : Fragment() {
         binding.branch.text = currentuser.branch
 
         Glide.with(this).load(currentuser.profilePic).into(binding.profilepic)
+    }
+
+    fun getUserRole(){
+        val auth = FirebaseAuth.getInstance().currentUser
+
+        auth?.uid?.let { uid ->
+            FirebaseFirestore.getInstance().collection("Users").document(uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    val current = document.toObject(User::class.java)!!
+                    if (document.exists()) {
+                        role = current.role
+                        }
+                    }
+                .addOnFailureListener {
+                }
+        }
     }
 }
