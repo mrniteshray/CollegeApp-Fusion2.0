@@ -6,7 +6,9 @@ data class User(
     val profilePic: String,
     val authId: String,
     val role: String,
-    val branch: String
-){
-    constructor() : this("", "", "", "", "", "")
+    val branch: String,
+    val upperAuthority: String?,
+    val parentemail: String?
+) {
+    constructor() : this("", "", "", "", "", "", null, null)
 }

@@ -6,26 +6,19 @@
     android:padding="16dp"
     android:background="@color/colorPrimary">
 
-    <ImageView
-        android:id="@+id/profileImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/ic_launcher_foreground"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/header_profile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/profileimg"
         android:layout_gravity="center"/>
     <TextView
+        android:id="@+id/header_Username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nitesh Ray"
         android:textStyle="bold"
+        android:gravity="center"
         android:textColor="@color/white"
         android:textSize="22sp"/>
-
-    <TextView
-        android:id="@+id/userEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="niteshr070104@collegeid.edu"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"/>
 </LinearLayout>

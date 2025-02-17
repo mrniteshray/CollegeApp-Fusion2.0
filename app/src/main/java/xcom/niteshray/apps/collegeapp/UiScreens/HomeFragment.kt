@@ -65,6 +65,7 @@ class HomeFragment : Fragment() {
         binding.name.text = currentuser.name
         binding.email.text = currentuser.email
         binding.branch.text = currentuser.branch
+        binding.role.text = currentuser.role
 
         Glide.with(this).load(currentuser.profilePic).into(binding.profilepic)
     }
