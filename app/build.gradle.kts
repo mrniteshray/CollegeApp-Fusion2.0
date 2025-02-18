@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.gms.google.services)
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 
 }
 
@@ -54,6 +56,14 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     //Glide library
     implementation(libs.github.glide)
+    //DI
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation (libs.logging.interceptor)
 
     implementation(libs.circleimageview)
     implementation(libs.firebase.firestore)

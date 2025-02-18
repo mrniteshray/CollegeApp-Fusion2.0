@@ -26,16 +26,26 @@ class LoginActivity : AppCompatActivity() {
         }
 
         if (mauth.currentUser != null){
-            startActivity(Intent(this,MainActivity::class.java))
-            finish()
+            if(mauth.currentUser?.email == "doctor@sitrc.org"){
+                startActivity(Intent(this,DoctorActivity::class.java))
+                finish()
+            }else{
+                startActivity(Intent(this,MainActivity::class.java))
+                finish()
+            }
         }
 
         binding.loginButton.setOnClickListener{
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
             mauth.signInWithEmailAndPassword(email,password).addOnSuccessListener {
-                startActivity(Intent(this,MainActivity::class.java))
-                finish()
+                if(it.user?.email == "doctor@sitrc.org"){
+                    startActivity(Intent(this,DoctorActivity::class.java))
+                    finish()
+                }else{
+                    startActivity(Intent(this,MainActivity::class.java))
+                    finish()
+                }
             }.addOnFailureListener{
                 Toast.makeText(this,it.localizedMessage,Toast.LENGTH_SHORT).show()
             }
