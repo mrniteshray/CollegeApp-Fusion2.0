@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
     //Glide library
     implementation(libs.github.glide)
     //DI
@@ -64,6 +65,9 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation (libs.logging.interceptor)
+
+    //for location service
+    implementation(libs.play.services.location)
 
     implementation(libs.circleimageview)
     implementation(libs.firebase.firestore)
