@@ -69,6 +69,8 @@
             android:background="@color/white"
             app:itemTextColor="@color/black"
             app:headerLayout="@layout/nav_header"
-            app:menu="@menu/drawer_menu" />
+            app:menu="@menu/drawer_menu"
+            app:itemBackground="?attr/selectableItemBackground"
+            />
     </androidx.drawerlayout.widget.DrawerLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

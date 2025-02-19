@@ -78,7 +78,7 @@ class ElectionFragment : Fragment() {
         val currentTime = Date()
 
         if (currentTime < startTime) {
-            binding.tvElectionTime.text = "Election starts in:"
+            binding.tvElectionTime.text = ""
 
             object : CountDownTimer(startTime.time - currentTime.time, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
@@ -87,7 +87,7 @@ class ElectionFragment : Fragment() {
                     val minutes = (millisUntilFinished / (1000 * 60)) % 60
                     val seconds = (millisUntilFinished / 1000) % 60
 
-                    binding.tvElectionTime.text = "Election starts in:\n$days Days $hours Hours $minutes Minutes $seconds Seconds"
+                    binding.tvElectionTime.text ="$days         $hours          $minutes                $seconds  "
                 }
 
                 override fun onFinish() {
@@ -96,7 +96,6 @@ class ElectionFragment : Fragment() {
             }.start()
 
         } else if (currentTime < endTime) {
-            binding.tvElectionTime.text = "Election ends in:"
 
             object : CountDownTimer(endTime.time - currentTime.time, 1000) {
                 override fun onTick(millisUntilFinished: Long) {

@@ -55,7 +55,7 @@ object EmailService {
 
                         CoroutineScope(Dispatchers.IO).launch {
                             try {
-                                val response = RetrofitInstance.apiservice(context).sendEmail(emailRequest).execute()
+                                val response = RetrofitInstance.brevoapi(context).sendEmail(emailRequest).execute()
                                 withContext(Dispatchers.Main) {
                                     if (response.isSuccessful) {
                                         Toast.makeText(context, "Email sent successfully", Toast.LENGTH_SHORT).show()

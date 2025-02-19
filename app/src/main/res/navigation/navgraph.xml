@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_homeFragment_to_complaintFragment"
             app:destination="@id/complaintFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_facilityFragment"
+            app:destination="@id/facilityFragment" />
     </fragment>
     <fragment
         android:id="@+id/electionFragment"
@@ -45,4 +48,18 @@
         android:name="xcom.niteshray.apps.collegeapp.UiScreens.complaints.ComplaintFragment"
         android:label="ComplaintFragment" >
     </fragment>
+    <fragment
+        android:id="@+id/facilityFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.facility.FacilityFragment"
+        android:label="fragment_facility"
+        tools:layout="@layout/fragment_facility" >
+        <action
+            android:id="@+id/action_facilityFragment_to_bookingFragment"
+            app:destination="@id/bookingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookingFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.Bookings.BookingFragment"
+        android:label="fragment_booking"
+        tools:layout="@layout/fragment_booking" />
 </navigation>

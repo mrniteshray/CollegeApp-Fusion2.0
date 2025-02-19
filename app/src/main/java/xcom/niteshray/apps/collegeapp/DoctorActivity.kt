@@ -131,7 +131,7 @@ class DoctorActivity : AppCompatActivity() {
             textContent = emailBody
         )
         CoroutineScope(Dispatchers.IO).launch {
-            RetrofitInstance.apiservice(context).sendEmail(emailRequest).enqueue(object : Callback<Void> {
+            RetrofitInstance.brevoapi(context).sendEmail(emailRequest).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(context, "Email sent successfully", Toast.LENGTH_SHORT).show()

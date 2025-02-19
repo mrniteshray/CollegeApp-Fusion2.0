@@ -45,6 +45,9 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_complaintFragment)
         }
 
+        binding.collegeFacilities.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_facilityFragment)
+        }
 
         fetchuser()
     }

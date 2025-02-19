@@ -9,7 +9,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 object RetrofitInstance {
     private const val BASE_URL = "https://api.brevo.com/"
 
-    fun apiservice(context: Context): Brevoapi {
+    fun brevoapi(context: Context): Brevoapi {
         val api: Brevoapi by lazy {
             val loggingInterceptor = HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -18,7 +18,7 @@ object RetrofitInstance {
                 .addInterceptor(loggingInterceptor)
                 .addInterceptor { chain ->
                     val request = chain.request().newBuilder()
-                        .addHeader("api-key","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")
+                        .addHeader("api-key","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")
                         .build()
                     chain.proceed(request)
                 }
@@ -33,4 +33,21 @@ object RetrofitInstance {
         }
         return api
     }
+
+    fun imgbbApi(): imgBBApi {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
+        return Retrofit.Builder()
+            .baseUrl("https://api.imgbb.com/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(imgBBApi::class.java)
+    }
+
 }

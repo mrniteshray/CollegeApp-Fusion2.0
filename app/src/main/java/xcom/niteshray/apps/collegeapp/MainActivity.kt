@@ -133,6 +133,8 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.nav_home -> navController.navigate(R.id.homeFragment)
                 R.id.nav_elections -> navController.navigate(R.id.electionFragment)
+                R.id.nav_complaints -> navController.navigate(R.id.complaintFragment)
+                R.id.nav_booking -> navController.navigate(R.id.facilityFragment)
                 R.id.nav_logout -> logout()
             }
             drawerLayout.closeDrawers()
