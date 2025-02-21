@@ -98,13 +98,12 @@ class LocationService : Service() {
 
         val currentDate = getCurrentDate()
 
-        if (currentDate != lastUpdatedDate) {
-            editor.putBoolean("enteredCampusToday", false)
-            editor.putBoolean("exitedCampusToday", false)
-            editor.putString("savedDate", currentDate)
-            editor.apply()
-        }
-
+//        if (currentDate != lastUpdatedDate) {
+//            editor.putBoolean("enteredCampusToday", false)
+//            editor.putBoolean("exitedCampusToday", false)
+//            editor.putString("savedDate", currentDate)
+//            editor.apply()
+//        }
 
         if (isInsideCampus) {
             if (!enteredCampusToday) {

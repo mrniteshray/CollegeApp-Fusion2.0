@@ -1,20 +1,32 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:title="Home" />
+        android:title="Home"
+        android:icon="@drawable/homeicon"
+        />
     <item
         android:id="@+id/nav_elections"
-        android:title="Student Elections" />
+        android:title="Student Elections"
+        android:icon="@drawable/elections"
+        />
     <item
         android:id="@+id/nav_complaints"
-        android:title="Anonymous Complaints" />
+        android:title="Anonymous Complaints"
+        android:icon="@drawable/complaints"
+        />
     <item
         android:id="@+id/nav_booking"
-        android:title="Facility Booking" />
+        android:title="Facility Booking"
+        android:icon="@drawable/facility"
+        />
     <item
         android:id="@+id/nav_budget"
-        android:title="Budget Tracking" />
+        android:title="Budget Tracking"
+        android:icon="@drawable/budgeticon"
+        />
     <item
         android:id="@+id/nav_logout"
-        android:title="Logout" />
+        android:title="Logout"
+        android:icon="@drawable/logout"
+        />
 </menu>

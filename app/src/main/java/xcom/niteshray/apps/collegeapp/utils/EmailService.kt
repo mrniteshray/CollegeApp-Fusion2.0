@@ -58,6 +58,7 @@ object EmailService {
                                 val response = RetrofitInstance.brevoapi(context).sendEmail(emailRequest).execute()
                                 withContext(Dispatchers.Main) {
                                     if (response.isSuccessful) {
+                                        Log.d("LocationService","Email Send")
                                         Toast.makeText(context, "Email sent successfully", Toast.LENGTH_SHORT).show()
                                     } else {
                                         val errorMessage = response.errorBody()?.string() ?: "Unknown error"

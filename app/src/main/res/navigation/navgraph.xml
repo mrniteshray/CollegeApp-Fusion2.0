@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeFragment_to_facilityFragment"
             app:destination="@id/facilityFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cheatersFragment"
+            app:destination="@id/cheatersFragment" />
     </fragment>
     <fragment
         android:id="@+id/electionFragment"
@@ -62,4 +65,9 @@
         android:name="xcom.niteshray.apps.collegeapp.UiScreens.Bookings.BookingFragment"
         android:label="fragment_booking"
         tools:layout="@layout/fragment_booking" />
+    <fragment
+        android:id="@+id/cheatersFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.Cheaters.CheatersFragment"
+        android:label="fragment_cheaters"
+        tools:layout="@layout/fragment_cheaters" />
 </navigation>

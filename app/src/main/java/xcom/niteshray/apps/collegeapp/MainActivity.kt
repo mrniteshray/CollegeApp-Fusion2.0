@@ -87,6 +87,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val sharedPrefs = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
+        val sharedPrefs2 = getSharedPreferences("LocationPrefs", Context.MODE_PRIVATE)
+        sharedPrefs2.getBoolean("enteredCampusToday",false)?.let { Log.d("LocationService",
+            it.toString()
+        ) }
+        val editor = sharedPrefs2.edit()
+        editor.putBoolean("enteredCampusToday", false)
+        editor.putBoolean("exitedCampusToday", false)
+
         val isFirstLaunch = sharedPrefs.getBoolean("isFirstLaunch", true)
 
         if (isFirstLaunch) {

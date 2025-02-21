@@ -48,6 +48,9 @@ class HomeFragment : Fragment() {
         binding.collegeFacilities.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_facilityFragment)
         }
+        binding.cardCheater.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_cheatersFragment)
+        }
 
         fetchuser()
     }

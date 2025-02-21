@@ -18,7 +18,7 @@ object RetrofitInstance {
                 .addInterceptor(loggingInterceptor)
                 .addInterceptor { chain ->
                     val request = chain.request().newBuilder()
-                        .addHeader("api-key","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")
+                        .addHeader("api-key","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")
                         .build()
                     chain.proceed(request)
                 }

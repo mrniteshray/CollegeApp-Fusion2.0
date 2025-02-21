@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp"
+    android:layout_margin="10dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="12dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/white"
+            android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cheater_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/profileimg"/>
+            <TextView
+                android:id="@+id/cheater_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nitesh Ray"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" Using mobile phone during exam"
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
+
+        <Button
+            android:id="@+id/btn_viewProof"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View Proof"/>
+
+        <Button
+            android:id="@+id/btn_appeal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit an Appeal"
+            android:visibility="gone"
+            android:layout_gravity="right"
+            android:backgroundTint="#26E42B"
+            />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

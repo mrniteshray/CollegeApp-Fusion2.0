@@ -134,7 +134,6 @@ class ComplaintFragment : Fragment() {
             "ghanta", "gandu", "chakka", "chichora", "chapri", "chhapri"
         )
 
-
         val words = text.lowercase().split(" ")
         val containsBadWord = words.any { it in bannedWords }
 
