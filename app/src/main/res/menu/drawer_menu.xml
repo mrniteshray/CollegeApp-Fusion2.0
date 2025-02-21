@@ -2,22 +2,27 @@
     <item
         android:id="@+id/nav_home"
         android:title="Home"
-        android:icon="@drawable/homeicon"
+        android:icon="@drawable/iconhome"
         />
     <item
         android:id="@+id/nav_elections"
         android:title="Student Elections"
-        android:icon="@drawable/elections"
+        android:icon="@drawable/side_election"
         />
     <item
         android:id="@+id/nav_complaints"
         android:title="Anonymous Complaints"
-        android:icon="@drawable/complaints"
+        android:icon="@drawable/side_complaints"
         />
     <item
         android:id="@+id/nav_booking"
         android:title="Facility Booking"
-        android:icon="@drawable/facility"
+        android:icon="@drawable/side_facility"
+        />
+    <item
+        android:id="@+id/nav_cheater"
+        android:title="Cheaters"
+        android:icon="@drawable/side_cheater"
         />
     <item
         android:id="@+id/nav_budget"

@@ -20,7 +20,6 @@ class FacilitiesAdapter(
     inner class FacilityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val facilityImg = itemView.findViewById<ImageView>(R.id.facility_img)
         val facilityname = itemView.findViewById<TextView>(R.id.facilityName)
-        val availability = itemView.findViewById<TextView>(R.id.tv_availability)
         val btnBook = itemView.findViewById<TextView>(R.id.btn_Book)
     }
 
@@ -33,12 +32,6 @@ class FacilitiesAdapter(
         val current = FacilitiList[position]
         holder.facilityname.text = current.name
         Glide.with(context).load(current.FacilityImgUrl).into(holder.facilityImg)
-        if (current.Availability){
-            holder.availability.text  = "Availability : Available"
-        }else{
-            holder.availability.text  = "Availability : Booked"
-            holder.btnBook.visibility = View.GONE
-        }
 
         holder.btnBook.setOnClickListener {
             onbtnClick(current)

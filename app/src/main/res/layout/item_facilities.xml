@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/facility_img"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="130dp"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/collegeauditorium" />
 
@@ -35,17 +35,6 @@
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_availability"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:fontFamily="sans-serif"
-            android:text="Availability : Available"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
 
         <Button
             android:id="@+id/btn_Book"

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_homeFragment_to_cheatersFragment"
             app:destination="@id/cheatersFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_eventFragment"
+            app:destination="@id/eventFragment" />
     </fragment>
     <fragment
         android:id="@+id/electionFragment"
@@ -70,4 +73,29 @@
         android:name="xcom.niteshray.apps.collegeapp.UiScreens.Cheaters.CheatersFragment"
         android:label="fragment_cheaters"
         tools:layout="@layout/fragment_cheaters" />
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.Budgets.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" >
+        <action
+            android:id="@+id/action_eventFragment_to_addEventFragment"
+            app:destination="@id/addEventFragment" />
+        <action
+            android:id="@+id/action_eventFragment_to_eventDetailsFragment"
+            app:destination="@id/eventDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEventFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.Budgets.AddEventFragment"
+        android:label="AddEventFragment" />
+    <fragment
+        android:id="@+id/eventDetailsFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.Budgets.EventDetailsFragment"
+        android:label="fragment_event_details"
+        tools:layout="@layout/fragment_event_details" >
+        <argument
+            android:name="event"
+            app:argType="xcom.niteshray.apps.collegeapp.model.Event" />
+    </fragment>
 </navigation>

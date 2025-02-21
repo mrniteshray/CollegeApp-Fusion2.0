@@ -47,6 +47,25 @@ class ElectionFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.GeneralSecretary.setOnClickListener {
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "General Secretary", role = Userrole)
+            findNavController().navigate(action)
+        }
+
+        binding.JointSecretary.setOnClickListener {
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Joint Secretary", role = Userrole)
+            findNavController().navigate(action)
+        }
+        binding.Treasurer.setOnClickListener {
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Treasurer", role = Userrole)
+            findNavController().navigate(action)
+        }
+
+        binding.SportsSecretary.setOnClickListener {
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "SportsSecretary", role = Userrole)
+            findNavController().navigate(action)
+        }
+
         binding.btnEditTiming.setOnClickListener {
             showEditTimingDialog()
         }

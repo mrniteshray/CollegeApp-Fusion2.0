@@ -130,19 +130,20 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Setup ActionBarDrawerToggle
+
         val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close)
         toggle.drawerArrowDrawable.color = resources.getColor(R.color.white)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // Navigation Drawer item selection
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> navController.navigate(R.id.homeFragment)
                 R.id.nav_elections -> navController.navigate(R.id.electionFragment)
                 R.id.nav_complaints -> navController.navigate(R.id.complaintFragment)
                 R.id.nav_booking -> navController.navigate(R.id.facilityFragment)
+                R.id.nav_cheater -> navController.navigate(R.id.cheatersFragment)
+                R.id.nav_budget -> navController.navigate(R.id.eventFragment)
                 R.id.nav_logout -> logout()
             }
             drawerLayout.closeDrawers()

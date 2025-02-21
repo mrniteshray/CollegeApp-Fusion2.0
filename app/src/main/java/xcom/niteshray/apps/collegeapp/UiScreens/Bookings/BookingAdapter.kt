@@ -30,6 +30,7 @@ class BookingAdapter(
         val btnApprove: Button = view.findViewById(R.id.btnApprove)
         val btnReject: Button = view.findViewById(R.id.btnReject)
         val facilityImage: ImageView = view.findViewById(R.id.facilityImage)
+        val bookingdate : TextView = itemView.findViewById(R.id.bookingDate)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookingViewHolder {
@@ -41,6 +42,7 @@ class BookingAdapter(
         val booking = bookingList[position]
         holder.facilityName.text = booking.facilityName
         holder.status.text = " Status: "+booking.status
+        holder.bookingdate.text = "Requested Booking on: "+booking.bookingDate
         Glide.with(context).load(booking.facilityImage).into(holder.facilityImage)
 
         if (booking.upperAuthority == currentUserId && booking.status == "pending") {

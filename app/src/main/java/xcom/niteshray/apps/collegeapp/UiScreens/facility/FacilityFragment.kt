@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import xcom.niteshray.apps.collegeapp.R
@@ -69,17 +69,40 @@ class FacilityFragment : Fragment() {
     }
 
     private fun onBookClick(facility: Facility) {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Confirm Booking")
-            .setMessage("Do you want to book ${facility.name}?")
-            .setPositiveButton("Confirm") { _, _ ->
-                bookFacility(facility)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select a booking date")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selection ->
+            val selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date(selection))
+            checkAvailabilityAndBook(facility, selectedDate)
+        }
+
+        datePicker.show(parentFragmentManager, "MATERIAL_DATE_PICKER")
     }
 
-    private fun bookFacility(facility: Facility) {
+    private fun checkAvailabilityAndBook(facility: Facility, selectedDate: String) {
+        val db = FirebaseFirestore.getInstance()
+
+        db.collection("Bookings")
+            .whereEqualTo("facilityId", facility.id)
+            .whereEqualTo("bookingDate", selectedDate)
+            .get()
+            .addOnSuccessListener { documents ->
+                if (!documents.isEmpty) {
+                    Toast.makeText(requireContext(), "Already booked for selected date", Toast.LENGTH_SHORT).show()
+                } else {
+                    bookFacility(facility, selectedDate)
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Error checking availability", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
+    private fun bookFacility(facility: Facility, selectedDate: String) {
         val bookingData = FacilityRequest(
             requestId = UUID.randomUUID().toString(),
             facilityId = facility.id,
@@ -87,7 +110,7 @@ class FacilityFragment : Fragment() {
             facilityImage = facility.FacilityImgUrl,
             bookedBy = currentUerData.name,
             bookedById = currentUerData.authId,
-            bookingDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),
+            bookingDate = selectedDate,
             status = "pending",
             approvedBy = null,
             upperAuthority = currentUerData.upperAuthority
