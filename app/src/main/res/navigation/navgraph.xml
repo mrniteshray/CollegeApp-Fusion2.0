@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_homeFragment_to_eventFragment"
             app:destination="@id/eventFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_healthSupport2"
+            app:destination="@id/healthSupport2" />
     </fragment>
     <fragment
         android:id="@+id/electionFragment"
@@ -48,6 +51,9 @@
             android:name="role"
             app:argType="string"
             android:defaultValue="noValue" />
+        <argument
+            android:name="isElection"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/complaintFragment"
@@ -60,14 +66,9 @@
         android:label="fragment_facility"
         tools:layout="@layout/fragment_facility" >
         <action
-            android:id="@+id/action_facilityFragment_to_bookingFragment"
-            app:destination="@id/bookingFragment" />
+            android:id="@+id/action_facilityFragment_to_facilityBookingFragment"
+            app:destination="@id/facilityBookingFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/bookingFragment"
-        android:name="xcom.niteshray.apps.collegeapp.UiScreens.Bookings.BookingFragment"
-        android:label="fragment_booking"
-        tools:layout="@layout/fragment_booking" />
     <fragment
         android:id="@+id/cheatersFragment"
         android:name="xcom.niteshray.apps.collegeapp.UiScreens.Cheaters.CheatersFragment"
@@ -97,5 +98,24 @@
         <argument
             android:name="event"
             app:argType="xcom.niteshray.apps.collegeapp.model.Event" />
+    </fragment>
+    <fragment
+        android:id="@+id/healthSupport2"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.healthSupport.HealthSupport"
+        android:label="fragment_health_support"
+        tools:layout="@layout/fragment_health_support" />
+    <fragment
+        android:id="@+id/facilityBookingFragment"
+        android:name="xcom.niteshray.apps.collegeapp.UiScreens.facility.FacilityBookingFragment"
+        android:label="FacilityBookingFragment" >
+        <argument
+            android:name="facility"
+            app:argType="xcom.niteshray.apps.collegeapp.model.Facility" />
+            />
+        <argument
+            android:name="User"
+            app:argType="xcom.niteshray.apps.collegeapp.model.User"
+            />
+        />
     </fragment>
 </navigation>

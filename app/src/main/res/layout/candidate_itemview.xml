@@ -51,14 +51,14 @@
                     android:text="a short bio of candidate about him"
                     android:textColor="#000000"
                     android:textSize="18sp" />
-
                 <TextView
-                    android:id="@+id/voteCount"
+                    android:id="@+id/votes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Votes : 32"
                     android:textSize="18sp"
-                    android:textColor="#3E3A3A"
-                    android:text="Votes: 2" />
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"/>
 
             </LinearLayout>
 

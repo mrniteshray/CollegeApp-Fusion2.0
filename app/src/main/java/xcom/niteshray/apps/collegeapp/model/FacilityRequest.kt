@@ -12,4 +12,3 @@ data class FacilityRequest(
     val approvedBy: String? = null, // Who last approved it
     val upperAuthority: String? = null // Next person who needs to approve
 )
-

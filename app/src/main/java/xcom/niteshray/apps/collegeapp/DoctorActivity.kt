@@ -4,11 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -18,11 +22,13 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Callback
+import xcom.niteshray.apps.collegeapp.UiScreens.DoctorAdapter
 import xcom.niteshray.apps.collegeapp.api.EmailRequest
 import xcom.niteshray.apps.collegeapp.api.Recipient
 import xcom.niteshray.apps.collegeapp.api.RetrofitInstance
 import xcom.niteshray.apps.collegeapp.api.Sender
 import xcom.niteshray.apps.collegeapp.databinding.ActivityDoctorBinding
+import xcom.niteshray.apps.collegeapp.model.Appointment
 import xcom.niteshray.apps.collegeapp.model.User
 
 class DoctorActivity : AppCompatActivity() {
@@ -30,7 +36,6 @@ class DoctorActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    private lateinit var Student : User
     private lateinit var Doctor : User
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +48,9 @@ class DoctorActivity : AppCompatActivity() {
             insets
         }
 
+        binding.recycler.layoutManager = LinearLayoutManager(this)
+        fetchAppointments()
+
         fetchDoctorInfo()
 
         binding.btnLogout.setOnClickListener{
@@ -51,52 +59,35 @@ class DoctorActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.btnSearch.setOnClickListener {
-            binding.progressBar.visibility = View.VISIBLE
-            val usersRef = db.collection("Users")
-            usersRef.whereEqualTo("name", binding.etUsername.text.toString())
-                .get()
-                .addOnSuccessListener { documents ->
-                    if (!documents.isEmpty) {
-                        Student = documents.documents[0].toObject(User::class.java)!!
-                        Glide.with(this).load(Student!!.profilePic).into(binding.profilepic)
-                        binding.progressBar.visibility = View.GONE
-                        binding.linear2.visibility = View.VISIBLE
-                        binding.linearlayout3.visibility = View.VISIBLE
-                        binding.name.text = Student!!.name
-                        binding.etillness.visibility = View.VISIBLE
-                        binding.btnSend.visibility = View.VISIBLE
-                    } else {
-                        binding.progressBar.visibility = View.GONE
-                        Toast.makeText(this, "User not found!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                .addOnFailureListener {
-                    binding.progressBar.visibility = View.GONE
-                    Toast.makeText(this, "Error searching user", Toast.LENGTH_SHORT).show()
-                }
-        }
-
-        binding.btnSend.setOnClickListener {
-            if (binding.etillness.text.toString().isNotEmpty()) {
-                binding.progressBar.visibility = View.VISIBLE
-                searchClassCoordinator(Student,binding.etillness.text.toString())
+    }
+    fun fetchAppointments(){
+        db.collection("appointments").get().addOnSuccessListener {
+            val list = mutableListOf<Appointment>()
+            Toast.makeText(this, "${it.size()}", Toast.LENGTH_SHORT).show()
+            for(document in it){
+                val appointment = document.toObject(Appointment::class.java)
+                list.add(appointment)
+            }
+            binding.recycler.adapter = DoctorAdapter(list){
+                writePrescription(it)
             }
         }
     }
 
-    private fun searchClassCoordinator(student: User,Illness: String) {
-        db.collection("Users")
-            .whereEqualTo("authId", student.upperAuthority)
-            .get().addOnSuccessListener {
-                if (!it.isEmpty) {
-                    val coordinator = it.documents[0].toObject(User::class.java)
-                    if (coordinator != null) {
-                        sendEmail(this,coordinator.email,student.name,Illness,coordinator.name)
-                    }
-                }
+    fun writePrescription(appointment: Appointment) {
+        val builder = AlertDialog.Builder(this)
+        val view = layoutInflater.inflate(R.layout.dialog_writeprescrip, null)
+        builder.setView(view)
+        val dialog = builder.create()
+        dialog.show()
+        view.findViewById<Button>(R.id.btn_sendReport).setOnClickListener {
+            val precription = view.findViewById<EditText>(R.id.inputTxt).text.toString()
+            if(precription.isNotEmpty()){
+                sendEmail(this,appointment,precription)
             }
+        }
     }
+
 
     private fun fetchDoctorInfo() {
         db.collection("Users").document(auth.currentUser!!.uid).get().addOnSuccessListener {
@@ -108,26 +99,23 @@ class DoctorActivity : AppCompatActivity() {
 
     private fun sendEmail(
         context: Context,
-        toEmail: String,
-        StudentName: String,
-        Illness: String,
-        Teachername: String
+        appointment: Appointment,
+        precription: String
     ) {
-
         val emailBody = """
-        Dear $Teachername,
+        Dear ,
 
-        This is to inform you that $StudentName is currently under my care for $Illness. I am monitoring their condition and will provide updates as necessary. Please don't hesitate to contact me if you have any questions or require further information.
+        I hope this email finds you well. Following our consultation on , please find your prescribed medications and treatment details below.
+        $precription
 
         Sincerely,
-
         Dr. ${Doctor.name}
         ${Doctor.email}
     """.trimIndent()
         val emailRequest = EmailRequest(
             sender = Sender("dopa696969696969@gmail.com", "Sitrc College"),
-            to = listOf(Recipient(toEmail, "User")),
-            subject = "Medical Notification for $StudentName",
+            to = listOf(Recipient(appointment.studentEmail, "User")),
+            subject = "Medical Prescription",
             textContent = emailBody
         )
         CoroutineScope(Dispatchers.IO).launch {
@@ -135,27 +123,17 @@ class DoctorActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(context, "Email sent successfully", Toast.LENGTH_SHORT).show()
-                        resetUI()
+
                     } else {
                         Toast.makeText(context, "Failed to send email", Toast.LENGTH_SHORT).show()
-                        resetUI()
                     }
                 }
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                     t.printStackTrace()
                     Toast.makeText(context, "Failed to send email", Toast.LENGTH_SHORT).show()
-                    resetUI()
+
                 }
             })
         }
-    }
-
-    private fun resetUI(){
-        binding.progressBar.visibility = View.GONE
-        binding.linear2.visibility = View.GONE
-        binding.linearlayout3.visibility = View.GONE
-        binding.etillness.visibility = View.GONE
-        binding.emailLayout.visibility = View.GONE
-        binding.btnSend.visibility = View.GONE
     }
 }

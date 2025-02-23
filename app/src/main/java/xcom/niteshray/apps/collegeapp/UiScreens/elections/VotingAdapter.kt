@@ -1,22 +1,24 @@
 package xcom.niteshray.apps.collegeapp.UiScreens.elections
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide // For image loading
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
 import xcom.niteshray.apps.collegeapp.R
 import xcom.niteshray.apps.collegeapp.model.Candidate
+import xcom.niteshray.apps.collegeapp.utils.EncryptionUtil
 
 class VotingAdapter(
     private val context: Context,
     private var candidates: List<Candidate>,
+    private val isElection : Boolean,
     private val onVoteClick: (Candidate) -> Unit
 ) : RecyclerView.Adapter<VotingAdapter.CandidateViewHolder>() {
 
@@ -25,7 +27,7 @@ class VotingAdapter(
         val name: TextView = itemView.findViewById(R.id.nametv)
         val bio: TextView = itemView.findViewById(R.id.bio)
         val voteButton: Button = itemView.findViewById(R.id.vote)
-        val voteCount = itemView.findViewById<TextView>(R.id.voteCount)
+        val votes : TextView = itemView.findViewById(R.id.votes)
 
         init {
             voteButton.setOnClickListener {
@@ -49,9 +51,12 @@ class VotingAdapter(
         holder.name.text = candidate.name
         holder.bio.text = candidate.bio
 
-        val votecount = candidate.votedUsers.size
-        holder.voteCount.text = "Votes: $votecount"
-
+        if (isElection){
+            holder.votes.visibility = View.VISIBLE
+            holder.votes.text = candidate.votedUsers.size.toString()
+        }else{
+            holder.votes.visibility = View.GONE
+        }
         Glide.with(context)
             .load(candidate.profilePic)
             .placeholder(R.drawable.profileimg)
@@ -60,7 +65,10 @@ class VotingAdapter(
 
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
 
-        if (userId in candidate.votedUsers) {
+        val currentUserEncrypt = EncryptionUtil.encrypt(userId)
+        Log.d("CheckEncryption", "Encrypted: $currentUserEncrypt")
+
+        if (currentUserEncrypt in candidate.votedUsers) {
             holder.voteButton.isEnabled = false
             holder.voteButton.text = "Voted"
             holder.voteButton.alpha = 0.5f
@@ -73,9 +81,8 @@ class VotingAdapter(
 
     override fun getItemCount(): Int = candidates.size
 
-    // **Update candidates list dynamically**
     fun updateCandidates(newCandidates: List<Candidate>) {
         candidates = newCandidates
-        notifyDataSetChanged()  // UI Refresh
+        notifyDataSetChanged()
     }
 }

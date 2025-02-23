@@ -1,6 +1,7 @@
 package xcom.niteshray.apps.collegeapp.UiScreens
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import xcom.niteshray.apps.collegeapp.R
 import xcom.niteshray.apps.collegeapp.databinding.FragmentHomeBinding
 import xcom.niteshray.apps.collegeapp.model.User
+import xcom.niteshray.apps.collegeapp.utils.EncryptionUtil
 
 class HomeFragment : Fragment() {
 
@@ -20,8 +22,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var currentuser : User
-
-
     private var auth = FirebaseAuth.getInstance().currentUser?.uid
 
     lateinit var role : String
@@ -37,6 +37,12 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         getUserRole()
+//        val text = "NiteshRayID"
+//        val encryptedText = EncryptionUtil.encrypt(text)
+//        Log.d("CheckEncryption", "Encrypted: $encryptedText")
+//        val decryptedText = EncryptionUtil.decrypt(encryptedText)
+//        Log.d("CheckEncryption", "Decrypted: $decryptedText")
+
 
         binding.cardElection.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_electionFragment)

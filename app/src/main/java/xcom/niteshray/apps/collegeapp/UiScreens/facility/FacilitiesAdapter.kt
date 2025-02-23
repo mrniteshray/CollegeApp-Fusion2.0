@@ -14,13 +14,12 @@ import xcom.niteshray.apps.collegeapp.model.Facility
 class FacilitiesAdapter(
     private val context: Context,
     private var FacilitiList: List<Facility>,
-    private val onbtnClick: (Facility) -> Unit
+    private val onItemClick: (Facility) -> Unit
 ) : RecyclerView.Adapter<FacilitiesAdapter.FacilityViewHolder>() {
 
     inner class FacilityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val facilityImg = itemView.findViewById<ImageView>(R.id.facility_img)
         val facilityname = itemView.findViewById<TextView>(R.id.facilityName)
-        val btnBook = itemView.findViewById<TextView>(R.id.btn_Book)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FacilityViewHolder {
@@ -31,10 +30,9 @@ class FacilitiesAdapter(
     override fun onBindViewHolder(holder: FacilityViewHolder, position: Int) {
         val current = FacilitiList[position]
         holder.facilityname.text = current.name
-        Glide.with(context).load(current.FacilityImgUrl).into(holder.facilityImg)
-
-        holder.btnBook.setOnClickListener {
-            onbtnClick(current)
+        Glide.with(context).load(current.bannerImage).into(holder.facilityImg)
+        holder.itemView.setOnClickListener{
+            onItemClick(current)
         }
     }
 

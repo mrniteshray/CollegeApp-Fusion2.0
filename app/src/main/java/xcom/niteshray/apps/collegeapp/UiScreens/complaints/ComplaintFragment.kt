@@ -2,14 +2,15 @@ package xcom.niteshray.apps.collegeapp.UiScreens.complaints
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -19,6 +20,7 @@ import xcom.niteshray.apps.collegeapp.R
 import xcom.niteshray.apps.collegeapp.databinding.FragmentComplaintBinding
 import xcom.niteshray.apps.collegeapp.model.Complaint
 import xcom.niteshray.apps.collegeapp.model.User
+import xcom.niteshray.apps.collegeapp.utils.EncryptionUtil
 
 class ComplaintFragment : Fragment() {
     private lateinit var binding: FragmentComplaintBinding
@@ -54,8 +56,10 @@ class ComplaintFragment : Fragment() {
     }
 
     private fun fetchComplaints() {
-        db.collection("complaints").orderBy("timestamp", Query.Direction.DESCENDING)
+        db.collectionGroup("complaints")
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshots, _ ->
+                Toast.makeText(requireContext(),"Fetched",Toast.LENGTH_LONG).show()
                 snapshots?.let {
                     val complaints = it.toObjects(Complaint::class.java)
                     complaintAdapter.updateComplaints(complaints)
@@ -67,10 +71,14 @@ class ComplaintFragment : Fragment() {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add__complaint, null)
         val editTextComplaint = dialogView.findViewById<EditText>(R.id.et_complaint_text)
         val checkBoxAnonymous = dialogView.findViewById<CheckBox>(R.id.checkbox_anonymous)
+        val spinnerDepartment = dialogView.findViewById<Spinner>(R.id.spinner_department)
         val submitbtn = dialogView.findViewById<Button>(R.id.btnaddcomplaint)
         val cancelbtn = dialogView.findViewById<Button>(R.id.btn_cancel)
 
 
+        val departments = listOf("Select Department", "Labs", "Transport", "Canteen", "Library", "Hostel", "Other")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, departments)
+        spinnerDepartment.adapter = adapter
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .create()
@@ -78,11 +86,16 @@ class ComplaintFragment : Fragment() {
         submitbtn.setOnClickListener {
             val complaintText = editTextComplaint.text.toString().trim()
             val isAnonymous = checkBoxAnonymous.isChecked
+            val selectedDepartment = spinnerDepartment.selectedItem.toString()
 
             if(complaintText.isNotBlank()){
                 checkForVulgarity(complaintText) { isClean ->
                     if (isClean) {
-                        submitComplaint(complaintText, isAnonymous)
+                        if (selectedDepartment =="Select Department"){
+                            Toast.makeText(requireContext(),"Please Select department",Toast.LENGTH_LONG).show()
+                        }else{
+                            submitComplaint(complaintText, isAnonymous,selectedDepartment)
+                        }
                         dialog.dismiss()
                     } else {
                         Toast.makeText(context, "Complaint contains inappropriate content!", Toast.LENGTH_SHORT).show()
@@ -100,25 +113,29 @@ class ComplaintFragment : Fragment() {
         dialog.show()
     }
 
-    private fun submitComplaint(text: String, isAnonymous: Boolean) {
+    private fun submitComplaint(text: String, isAnonymous: Boolean,selectedDept : String) {
         if (text.isBlank()) {
             Toast.makeText(context, "Please enter a complaint", Toast.LENGTH_SHORT).show()
             return
         }
         val complaintId = db.collection("complaints").document().id
+        val encryptedUsername = EncryptionUtil.encrypt(current.name)
+        val encryptedUserid = EncryptionUtil.encrypt(auth.currentUser!!.uid)
         val complaint = Complaint(
             id = complaintId,
             text = text,
-            userId = if (isAnonymous) "Anonymous" else auth.currentUser!!.uid,
-            originalUserId = current.name,
+            userId = encryptedUserid,
+            originalUsername = encryptedUsername,
             timestamp = System.currentTimeMillis(),
             anonymous = isAnonymous,
-            status = "Pending",
+            isResolved = false,
+            department = selectedDept,
             votesToReveal = listOf()
         )
-        db.collection("complaints").document(complaintId).set(complaint)
+        db.collection("complaints").document(selectedDept).collection("complaints").document(complaintId).set(complaint)
             .addOnSuccessListener {
                 Toast.makeText(context, "Complaint submitted", Toast.LENGTH_SHORT).show()
+                complaintAdapter.notifyDataSetChanged()
             }
     }
 
@@ -131,7 +148,7 @@ class ComplaintFragment : Fragment() {
             "bc", "mc", "kutti", "kutte", "hijra", "meetha", "kamina", "kaminey",
             "harami", "nalayak", "bewakoof", "behenchod", "teri maa ki", "teri behen ki",
             "lund", "chodu", "tatti", "gaand mara", "jhantu", "jhant", "bakchod",
-            "ghanta", "gandu", "chakka", "chichora", "chapri", "chhapri"
+            "ghanta", "gandu", "chakka", "chichora", "chapri", "chhapri","Idiot","BullShit","idiot"
         )
 
         val words = text.lowercase().split(" ")

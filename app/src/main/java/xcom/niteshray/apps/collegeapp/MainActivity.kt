@@ -35,10 +35,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import xcom.niteshray.apps.collegeapp.UiScreens.HomeFragment
+import xcom.niteshray.apps.collegeapp.model.Facility
+import xcom.niteshray.apps.collegeapp.model.Slot
 import xcom.niteshray.apps.collegeapp.model.User
 import xcom.niteshray.apps.collegeapp.utils.LocationService
 import xcom.niteshray.apps.collegeapp.utils.MidnightReceiver
 import java.util.Calendar
+import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
@@ -87,14 +90,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val sharedPrefs = getSharedPreferences("AppPrefs", Context.MODE_PRIVATE)
-        val sharedPrefs2 = getSharedPreferences("LocationPrefs", Context.MODE_PRIVATE)
-        sharedPrefs2.getBoolean("enteredCampusToday",false)?.let { Log.d("LocationService",
-            it.toString()
-        ) }
-        val editor = sharedPrefs2.edit()
-        editor.putBoolean("enteredCampusToday", false)
-        editor.putBoolean("exitedCampusToday", false)
-
         val isFirstLaunch = sharedPrefs.getBoolean("isFirstLaunch", true)
 
         if (isFirstLaunch) {
@@ -121,6 +116,7 @@ class MainActivity : AppCompatActivity() {
                     username.text = currentuser.name
                     if(currentuser.role == "Student"){
                         checkPermissions()
+
                     }else{
                         val service = Intent(this, LocationService::class.java)
                         stopService(service)
@@ -144,10 +140,49 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_booking -> navController.navigate(R.id.facilityFragment)
                 R.id.nav_cheater -> navController.navigate(R.id.cheatersFragment)
                 R.id.nav_budget -> navController.navigate(R.id.eventFragment)
+                R.id.nav_Health -> navController.navigate(R.id.healthSupport2)
                 R.id.nav_logout -> logout()
             }
             drawerLayout.closeDrawers()
             true
+        }
+    }
+
+    fun uploadDummyFacilities() {
+        val firestore = FirebaseFirestore.getInstance()
+
+        val facility1 = Facility(
+            facilityId = UUID.randomUUID().toString(),
+            name = "Library",
+            bannerImage = "https://example.com/library.jpg",
+            openTime = "08:00 AM",
+            closeTime = "08:00 PM",
+            guardId = "guard001",
+            slots = emptyList() // No slots
+        )
+
+        val facility2 = Facility(
+            facilityId = UUID.randomUUID().toString(),
+            name = "Gym",
+            bannerImage = "https://example.com/gym.jpg",
+            openTime = "06:00 AM",
+            closeTime = "10:00 PM",
+            guardId = "guard002",
+            slots = emptyList() // No slots
+        )
+
+        val facilities = listOf(facility1, facility2)
+
+        for (facility in facilities) {
+            firestore.collection("facilities")
+                .document(facility.facilityId)
+                .set(facility)
+                .addOnSuccessListener {
+                    println("Successfully added facility: ${facility.name}")
+                }
+                .addOnFailureListener { e ->
+                    println("Error adding facility: ${e.message}")
+                }
         }
     }
 

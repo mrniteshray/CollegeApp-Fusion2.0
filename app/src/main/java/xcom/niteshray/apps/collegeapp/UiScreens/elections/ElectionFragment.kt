@@ -1,11 +1,14 @@
 package xcom.niteshray.apps.collegeapp.UiScreens.elections
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -17,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import xcom.niteshray.apps.collegeapp.R
 import java.util.Date
 import xcom.niteshray.apps.collegeapp.databinding.FragmentElectionBinding
+import java.util.Calendar
 
 class ElectionFragment : Fragment() {
 
@@ -26,6 +30,7 @@ class ElectionFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
 
     private lateinit var Userrole : String
+    private var isElectionCompleted = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,31 +43,26 @@ class ElectionFragment : Fragment() {
         getUserRole()
 
         binding.president.setOnClickListener {
-            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "President", role = Userrole)
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "President", role = Userrole, isElection = isElectionCompleted)
             findNavController().navigate(action)
         }
 
         binding.vicePresident.setOnClickListener {
-            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Vice President", role = Userrole)
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Vice President", role = Userrole,isElection = isElectionCompleted)
             findNavController().navigate(action)
         }
 
         binding.GeneralSecretary.setOnClickListener {
-            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "General Secretary", role = Userrole)
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "General Secretary", role = Userrole,isElection = isElectionCompleted)
             findNavController().navigate(action)
         }
 
         binding.JointSecretary.setOnClickListener {
-            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Joint Secretary", role = Userrole)
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Joint Secretary", role = Userrole,isElection = isElectionCompleted)
             findNavController().navigate(action)
         }
         binding.Treasurer.setOnClickListener {
-            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Treasurer", role = Userrole)
-            findNavController().navigate(action)
-        }
-
-        binding.SportsSecretary.setOnClickListener {
-            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "SportsSecretary", role = Userrole)
+            val action = ElectionFragmentDirections.actionElectionFragmentToVotingFragment(position = "Treasurer", role = Userrole , isElection = isElectionCompleted)
             findNavController().navigate(action)
         }
 
@@ -98,7 +98,6 @@ class ElectionFragment : Fragment() {
 
         if (currentTime < startTime) {
             binding.tvElectionTime.text = ""
-
             object : CountDownTimer(startTime.time - currentTime.time, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     val days = millisUntilFinished / (1000 * 60 * 60 * 24)
@@ -128,6 +127,8 @@ class ElectionFragment : Fragment() {
 
                 override fun onFinish() {
                     binding.tvElectionTime.text = "Election has ended"
+                    db.collection("elections").document("electionInfo")
+                        .update("isElectionCompleted", true)
                 }
             }.start()
 
@@ -135,7 +136,6 @@ class ElectionFragment : Fragment() {
             binding.tvElectionTime.text = "Election has ended"
         }
     }
-
 
     fun getUserRole(){
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -160,28 +160,69 @@ class ElectionFragment : Fragment() {
         }
     }
 
-
     private fun showEditTimingDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_selectdatetime, null)
+        val startDateButton = dialogView.findViewById<Button>(R.id.btnSelectStartDateTime)
+        val endDateButton = dialogView.findViewById<Button>(R.id.btnSelectEndDateTime)
+        val okButton = dialogView.findViewById<Button>(R.id.btnSaveTiming)
+
+        var startTimestamp: Timestamp? = null
+        var endTimestamp: Timestamp? = null
+
         val dialog = AlertDialog.Builder(requireContext())
-        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_timing, null)
-        val etStartTime = dialogView.findViewById<EditText>(R.id.etStartTime)
-        val etEndTime = dialogView.findViewById<EditText>(R.id.etEndTime)
+            .setView(dialogView)
+            .setTitle("Select Election Timing")
+            .setNegativeButton("Cancel", null)
+            .create()
 
-        dialog.setView(dialogView)
-        dialog.setPositiveButton("Save") { _, _ ->
-            val startTime = Timestamp(Date(etStartTime.text.toString().toLong()))
-            val endTime = Timestamp(Date(etEndTime.text.toString().toLong()))
-
-            db.collection("elections").document("electionInfo")
-                .set(mapOf("startTime" to startTime, "endTime" to endTime))
-                .addOnSuccessListener {
-                    Toast.makeText(requireContext(), "Election timing updated", Toast.LENGTH_SHORT).show()
-                    fetchElectionTiming()
-                }
+        startDateButton.setOnClickListener {
+            showDateTimePicker { selectedDateTime ->
+                startTimestamp = Timestamp(selectedDateTime)
+                startDateButton.text = selectedDateTime.toString()
+            }
         }
-        dialog.setNegativeButton("Cancel", null)
+
+        endDateButton.setOnClickListener {
+            showDateTimePicker { selectedDateTime ->
+                endTimestamp = Timestamp(selectedDateTime)
+                endDateButton.text = selectedDateTime.toString()
+            }
+        }
+
+        okButton.setOnClickListener {
+            if (startTimestamp != null && endTimestamp != null) {
+                saveElectionTimingToFirestore(startTimestamp!!, endTimestamp!!)
+                dialog.dismiss()
+            } else {
+                Toast.makeText(requireContext(), "Please select both start and end time", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         dialog.show()
     }
+
+    private fun showDateTimePicker(onDateTimeSelected: (Date) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
+            val timePicker = TimePickerDialog(requireContext(), { _, hour, minute ->
+                calendar.set(year, month, dayOfMonth, hour, minute)
+                onDateTimeSelected(calendar.time)
+            }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false)
+            timePicker.show()
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        datePicker.show()
+    }
+
+    private fun saveElectionTimingToFirestore(startTime: Timestamp, endTime: Timestamp) {
+        db.collection("elections").document("electionInfo")
+            .set(mapOf("startTime" to startTime, "endTime" to endTime))
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Election timing updated", Toast.LENGTH_SHORT).show()
+                fetchElectionTiming()
+            }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

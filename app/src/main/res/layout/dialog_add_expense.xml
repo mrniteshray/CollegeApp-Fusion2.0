@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Expense"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:paddingBottom="8dp" />
+
+    <EditText
+        android:id="@+id/expenseItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Expense Item Name"
+        android:padding="10dp"
+        android:background="@drawable/edittv_bg" />
+
+    <EditText
+        android:id="@+id/expenseCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Expense Cost"
+        android:inputType="number"
+        android:padding="10dp"
+        android:background="@drawable/edittv_bg"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/proofUrl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Proof/Bills"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/addExpenseBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Expense"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@android:color/white" />
+</LinearLayout>

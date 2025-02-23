@@ -201,6 +201,8 @@ class AddEventFragment : Fragment() {
             }
     }
 
+
+
     override fun onDestroyView() {
         super.onDestroyView()
     }
